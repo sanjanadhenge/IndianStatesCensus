@@ -1,4 +1,5 @@
 using IndianStatesCensus;
+using IndianStatesCensusAnalyzer;
 
 namespace TestProject1
 {
@@ -69,6 +70,76 @@ namespace TestProject1
             try
             {
                 bool records = informationAnalyze.ReadData(@"C:\Users\SOURABH\Desktop\RFP\IndianStatesCensus\TestProject1\Files\IncorrectHeader.csv", "state,city,population,densityPerSqKm");
+            }
+            catch (StateCensusException ex)
+            {
+                Assert.AreEqual(ex.Message, "Header is incorrect");
+            }
+        }
+        public string filePath2 = @"C:\Users\SOURABH\Desktop\RFP\IndianStatesCensus\TestProject1\Files\StateCode - StateCode.csv";
+        
+        //TC2.1
+        [Test]
+        public void GivenStateCodeData_WhenAnalyze_ShouldReturnNoOfRecordsMatches()
+        {
+            CodeAnalyze codeAnalyze = new CodeAnalyze();
+            AnalyzeStateCode analyzeStateCode = new AnalyzeStateCode();
+            Assert.AreEqual(codeAnalyze.ReadData(filePath2), analyzeStateCode.ReadData(filePath2));
+        }
+        //TC2.2
+        [Test]
+        public void GivenStateCodeDataFileInCorrect_WhenAnalyze_ShouldReturnException()
+        {
+            string filePath1 = @"C:\Users\SOURABH\Desktop\RFP\IndianStatesCensus\TestProject1\Files\StateCode - StateCode.csv";
+            CodeAnalyze codeAnalyze = new CodeAnalyze();
+            try
+            {
+                int records = codeAnalyze.ReadData(filePath1);
+            }
+            catch (StateCensusException ex)
+            {
+                Assert.AreEqual(ex.Message, "File is incorrect");
+            }
+        }
+        //TC2.3
+        [Test]
+        public void GivenStateCodeDataFileInCorrectDelimiter_WhenAnalyze_ShouldReturnException()
+        {
+
+            CodeAnalyze codeAnalyze = new CodeAnalyze();
+            try
+            {
+                int records = codeAnalyze.ReadData(@"C:\Users\SOURABH\Desktop\RFP\IndianStatesCensus\TestProject1\Files\DelimiterCode.csv");
+            }
+            catch (StateCensusException ex)
+            {
+                Assert.AreEqual(ex.Message, "Delimiter is incorrect");
+            }
+        }
+        //TC2.4
+        [Test]
+        public void GivenStateCodeDataFileInCorrectType_WhenAnalyze_ShouldReturnException()
+        {
+
+            CodeAnalyze codeAnalyze = new CodeAnalyze();
+            try
+            {
+                int records = codeAnalyze.ReadData(@"C:\Users\SOURABH\Desktop\RFP\IndianStatesCensus\TestProject1\Files\Code.txt");
+            }
+            catch (StateCensusException ex)
+            {
+                Assert.AreEqual(ex.Message, "Type is incorrect");
+            }
+        }
+        //TC2.5
+        [Test]
+        public void GivenStateCodeDataFileInCorrectHeader_WhenAnalyze_ShouldReturnException()
+        {
+
+            CodeAnalyze codeAnalyze = new CodeAnalyze();
+            try
+            {
+                bool records = codeAnalyze.ReadData(@"C:\Users\SOURABH\Desktop\RFP\IndianStatesCensus\TestProject1\Files\IncorrectHeader.csv", "SrNo,StateName,TIN,StateCode");
             }
             catch (StateCensusException ex)
             {
